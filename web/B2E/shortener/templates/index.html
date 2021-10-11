@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{%block content%}
+  <h1>create </h1>
+    <form action="/shortener/create" method="POST" onsubmit="return mySubmitFunction()"> {%csrf_token%}
+      <label for="full_url">輸入網址：</label>
+      <input name="full_url" id="full_url" type="text" class="form-control" required autocomplete="off">
+      <button type="submit" class="btn btn-warning btn-lg btn-block">送出</button>
+    </form>
+  </div>
+{%endblock%}
+
+{%block script%}
+  <script type="text/javascript">
+    function mySubmitFunction(){
+      const click = confirm('確認送出?');
+      if (click == true) {return true}
+        return false;
+    }
+  </script>
+{%endblock%}

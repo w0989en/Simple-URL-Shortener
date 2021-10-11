@@ -1,0 +1,23 @@
+version: '3.8'
+
+services: 
+    web:
+        build: ./web
+        container_name: b2e_web
+        command: [ "/bin/bash", "-c", "uwsgi --ini uwsgi.ini" ]
+        volumes:
+            # Using for production that could share the named volume for other services.
+            - b2e_data:/web/B2E
+    nginx:
+        build: ./nginx
+        container_name: b2e_nginx
+        volumes:
+            # Using the named volume from the Django project.
+            - b2e_data:/web/B2E
+        ports:
+            - "127.0.0.1:8000:80"
+        depends_on:
+            - web
+
+volumes:
+    b2e_data:
