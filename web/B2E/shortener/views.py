@@ -38,9 +38,7 @@ def create(request):
 @require_http_methods(["GET"])
 def create_success(request):
     short_url = request.GET.get('short_url', '')
-    print('short_url:::', short_url)
     data = models.ShortURL.objects.filter(short_url=short_url)
-    print('DATA:::', data)
     if len(data) == 0:
         return render(request, 'error.html')
     context = {'short_url': f"http://localhost:8000/shortener/{short_url}"}
@@ -50,5 +48,4 @@ def create_success(request):
 @require_http_methods(["GET"])
 def short_url_redirect(request, short_url):
     data = models.ShortURL.objects.get(short_url=short_url)
-    print(data.full_url)
     return redirect(f'{data.full_url}')
