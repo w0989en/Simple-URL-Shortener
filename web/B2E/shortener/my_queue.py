@@ -8,7 +8,10 @@ import queue
 class PythonQueue(object):
     def __init__(self):
         self.queue_len = 1000
-        id_max = models.ShortURL.objects.all().aggregate(Max('id'))['id__max'] + 1
+        try:
+            id_max = models.ShortURL.objects.all().aggregate(Max('id'))['id__max'] + 1
+        except:
+            id_max = 1
         print('id_max=', id_max)
         self.q = queue.Queue()
         for i in range(self.queue_len):
@@ -20,7 +23,6 @@ class PythonQueue(object):
     def get(self, timeout=10):
         item = self.q.get(timeout=timeout)
         return item
-
 
 # class RedisQueue(object):
 #     def __init__(self, name, namespace='queue', **redis_kwargs):
@@ -43,4 +45,3 @@ class PythonQueue(object):
 #         # 直接返回队列第一个元素，如果队列为空返回的是None
 #         item = self.__db.lpop(self.key)
 #         return item
-
