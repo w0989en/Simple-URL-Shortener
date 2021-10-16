@@ -1,6 +1,21 @@
 version: '3.8'
 
 services: 
+    mysql:
+        image: mysql:5.7
+        container_name: b2e_mysql
+        hostname: mysql
+        ports:
+        - 3306:3306
+        volumes:
+        - ./db:/var/lib/mysql
+        environment:
+        - MYSQL_HOST=localhost 
+        - MYSQL_PORT=3306 
+        - MYSQL_DATABASE=dev
+        - MYSQL_USER=dev
+        - MYSQL_PASSWORD=123456
+        - MYSQL_ROOT_PASSWORD=123456      
     web:
         build: ./web
         container_name: b2e_web
@@ -8,6 +23,9 @@ services:
         volumes:
             # Using for production that could share the named volume for other services.
             - b2e_data:/web/B2E
+        depends_on:
+            - mysql  
+
     nginx:
         build: ./nginx
         container_name: b2e_nginx
