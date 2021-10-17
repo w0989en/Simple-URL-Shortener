@@ -6,25 +6,31 @@ services:
         container_name: b2e_mysql
         hostname: mysql
         ports:
-        - 3306:3306
+            - 3306:3306
         volumes:
-        - ./db:/var/lib/mysql
+            - b2e_db:/var/lib/mysql
         environment:
-        - MYSQL_HOST=localhost 
-        - MYSQL_PORT=3306 
-        - MYSQL_DATABASE=dev
-        - MYSQL_USER=dev
-        - MYSQL_PASSWORD=123456
-        - MYSQL_ROOT_PASSWORD=123456      
+            - MYSQL_HOST=localhost 
+            - MYSQL_PORT=3306 
+            - MYSQL_DATABASE=dev
+            - MYSQL_USER=dev
+            - MYSQL_PASSWORD=123456
+            - MYSQL_ROOT_PASSWORD=123456
+
     web:
         build: ./web
         container_name: b2e_web
-        command: [ "/bin/bash", "-c", "uwsgi --ini uwsgi.ini" ]
+        command: [ 
+            "/web/wait-for-it.sh", "mysql:3306", 
+            "--timeout=20",
+            "--", "/bin/bash", "/web/docker-entrypoint.sh", 
+            "--", "/bin/bash", "-c", "uwsgi --ini uwsgi.ini" ]
+        # command: [ "/bin/bash", "-c", "uwsgi --ini uwsgi.ini" ]
         volumes:
             # Using for production that could share the named volume for other services.
             - b2e_data:/web/B2E
         depends_on:
-            - mysql  
+            - mysql
 
     nginx:
         build: ./nginx
@@ -39,3 +45,4 @@ services:
 
 volumes:
     b2e_data:
+    b2e_db:

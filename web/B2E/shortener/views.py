@@ -28,6 +28,7 @@ def index(request):
 def create(request):
     new_id = py_queue.get()
     py_queue.put(new_id+py_queue.queue_len)
+    print(py_queue.qsize())
     new_row = models.ShortURL(id=new_id)
     new_row.full_url = request.POST['full_url']
     new_row.short_url = int_to_64(new_row.id)
@@ -47,5 +48,8 @@ def create_success(request):
 
 @require_http_methods(["GET"])
 def short_url_redirect(request, short_url):
-    data = models.ShortURL.objects.get(short_url=short_url)
-    return redirect(f'{data.full_url}')
+    # data = models.ShortURL.objects.get(short_url=short_url)
+    data = models.ShortURL.objects.filter(short_url=short_url)
+    if len(data) == 0:
+        return render(request, 'error.html')
+    return redirect(f'{data[0].full_url}')
