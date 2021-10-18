@@ -11,6 +11,11 @@ base_64 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'
 
 
 def int_to_64(n):
+    '''
+        Number to base64
+        n: int
+        return: string
+    '''
     if n == 0:
         return '0'
     r = []

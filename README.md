@@ -1,7 +1,7 @@
 # Simple-URL-Shortener
 
 ## Description
-Django 3.2 + UWSIG + Nginx + MySQL
+Django 3.2 + UWSIG + Nginx + MySQL + Redis
 
 ## Installation
 
