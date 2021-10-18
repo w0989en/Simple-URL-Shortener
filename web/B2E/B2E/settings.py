@@ -81,20 +81,6 @@ WSGI_APPLICATION = 'B2E.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'django_app',
-#         'USER': 'root',
-#         'PASSWORD': 'mypassword',
-#         'HOST': 'db',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'init_command': 'ALTER DATABASE django_app CHARACTER SET utf8mb4 COLLATE utf8mb4_general_cs',
-#         },
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
