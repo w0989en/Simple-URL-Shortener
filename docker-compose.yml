@@ -1,6 +1,12 @@
 version: '3.8'
 
 services: 
+    redis:
+        image: redis:5.0.5-alpine
+        container_name: b2e_redis
+        ports:
+            - 6379:6379
+
     mysql:
         image: mysql:5.7
         container_name: b2e_mysql

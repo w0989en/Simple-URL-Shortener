@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from shortener import models
 
-from shortener.my_queue import PythonQueue
+from shortener.my_queue import PythonQueue, RedisQueue
 
 
-py_queue = PythonQueue()
+# py_queue = PythonQueue()
+redis_queue = RedisQueue('b2e')
 base_64 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'
 
 
@@ -26,9 +27,12 @@ def index(request):
 
 @require_http_methods(["POST"])
 def create(request):
-    new_id = py_queue.get()
-    py_queue.put(new_id+py_queue.queue_len)
-    print(py_queue.qsize())
+    # new_id = py_queue.get()
+    # py_queue.put(new_id+py_queue.queue_len)
+    # print(py_queue.qsize())
+    new_id = int(redis_queue.get()[1])
+    redis_queue.put(new_id+redis_queue.queue_len)
+
     new_row = models.ShortURL(id=new_id)
     new_row.full_url = request.POST['full_url']
     new_row.short_url = int_to_64(new_row.id)
